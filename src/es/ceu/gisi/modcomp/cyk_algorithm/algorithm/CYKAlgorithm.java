@@ -26,7 +26,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
         if(nonterminal != prueba && Character.isLetter(nonterminal)){
            noTerminales.add(nonterminal);
         }else {
-            throw new CYKAlgorithmException("EL símobolo no es terminal");
+            throw new CYKAlgorithmException("EL símobolo no es No terminal");
         }
         //throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -39,7 +39,14 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * @throws CYKAlgorithmException Si el elemento no es una letra minúscula.
      */
     public void addTerminal(char terminal) throws CYKAlgorithmException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        char prueba = Character.toLowerCase(terminal);
+         Set<Character> Terminales = new HashSet<Character>();
+        if(terminal == prueba && Character.isLetter(terminal)){
+           Terminales.add(terminal);
+        }else {
+            throw new CYKAlgorithmException("EL símobolo no es No terminal");
+        }
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
