@@ -4,6 +4,7 @@ import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.exceptions.CYKAlgorithmExcept
 import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.interfaces.CYKAlgorithmInterface;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 /**
  * Esta clase contiene la implementación de la interfaz CYKAlgorithmInterface
  * que establece los métodos necesarios para el correcto funcionamiento del
@@ -12,7 +13,8 @@ import java.util.HashSet;
  * @author Sergio Saugar García <sergio.saugargarcia@ceu.es>
  */
 public class CYKAlgorithm implements CYKAlgorithmInterface {
-
+Set<Character> noTerminales = new HashSet<Character>();
+ 
     @Override
     /**
      * Método que añade los elementos no terminales de la gramática.
@@ -22,7 +24,6 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      */
     public void addNonTerminal(char nonterminal) throws CYKAlgorithmException {
         char prueba = Character.toLowerCase(nonterminal);
-         Set<Character> noTerminales = new HashSet<Character>();
         if(nonterminal != prueba && Character.isLetter(nonterminal)){
            noTerminales.add(nonterminal);
         }else {
@@ -44,7 +45,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
         if(terminal == prueba && Character.isLetter(terminal)){
            Terminales.add(terminal);
         }else {
-            throw new CYKAlgorithmException("EL símobolo no es No terminal");
+            throw new CYKAlgorithmException("EL símobolo no es terminal");
         }
         //throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -59,7 +60,17 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * conjunto de elementos no terminales.
      */
     public void setStartSymbol(char nonterminal) throws CYKAlgorithmException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (noTerminales.contains(nonterminal)){
+            
+        }else{
+            char prueba = Character.toLowerCase(nonterminal);
+        if(nonterminal != prueba && Character.isLetter(nonterminal)){
+           noTerminales.add(nonterminal);
+        }else {
+            throw new CYKAlgorithmException("EL símobolo no es No terminal");
+        }
+        }
+       // throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
