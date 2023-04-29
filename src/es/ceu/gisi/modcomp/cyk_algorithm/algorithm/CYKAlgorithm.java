@@ -2,7 +2,8 @@ package es.ceu.gisi.modcomp.cyk_algorithm.algorithm;
 
 import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.exceptions.CYKAlgorithmException;
 import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.interfaces.CYKAlgorithmInterface;
-
+import java.util.Set;
+import java.util.HashSet;
 /**
  * Esta clase contiene la implementación de la interfaz CYKAlgorithmInterface
  * que establece los métodos necesarios para el correcto funcionamiento del
@@ -20,7 +21,14 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * @throws CYKAlgorithmException Si el elemento no es una letra mayúscula.
      */
     public void addNonTerminal(char nonterminal) throws CYKAlgorithmException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        char prueba = Character.toLowerCase(nonterminal);
+         Set<Character> noTerminales = new HashSet<Character>();
+        if(nonterminal != prueba && Character.isLetter(nonterminal)){
+           noTerminales.add(nonterminal);
+        }else {
+            throw new CYKAlgorithmException("EL símobolo no es terminal");
+        }
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

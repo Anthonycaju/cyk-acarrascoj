@@ -6,7 +6,7 @@ package es.ceu.gisi.modcomp.cyk_algorithm.algorithm.exceptions;
  */
 public class CYKAlgorithmException extends Exception {
 
-    public CYKAlgorithmException() {
+    public CYKAlgorithmException(String el_símobolo_no_es_terminal) {
     }
 
 }
