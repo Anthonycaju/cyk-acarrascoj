@@ -103,11 +103,64 @@ Set<Character> noTerminales = new HashSet<Character>();
      */
     public void addProduction(char nonterminal, String production) throws CYKAlgorithmException {
         char prueba = Character.toLowerCase(nonterminal);
+        int tamanno = production.length();
+        if (nonterminal != prueba && Character.isLetter(nonterminal) && noTerminales.contains(nonterminal)) {
+            //comporabamos ahora las producciones
+            switch (tamanno) {
+                case 1:
+                    //La produccion es un terminal
+                    if (Terminales.contains(production)) {
+                        if (nonterminal != prueba && Character.isLetter(nonterminal)) {
+                            throw new CYKAlgorithmException("El No Terminal no se adpata al formato");
+                        } else {
+                            if (noTerminales.contains(nonterminal)) {
+                                throw new CYKAlgorithmException(" El no terminal no est definido");
+                            }
+                        }
+                    } else {
+                        throw new CYKAlgorithmException("El formato de la produccionno esta bien, pureba a añadirlo a terminales");
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i == 2; i++) {
+                        char c = production.charAt(i);
+                        if (noTerminales.contains(c)) {
+                            if (nonterminal != prueba && Character.isLetter(nonterminal)) {
+                                throw new CYKAlgorithmException("El No Terminal no se adpata al formato");
+                            } else {
+                                if (noTerminales.contains(nonterminal)) {
+                                    throw new CYKAlgorithmException(" El no terminal no est definido");
+                                }
+                            }
+                        } else {
+                            throw new CYKAlgorithmException("NO terminal no definido");
+                        }
+                    }
+                    break;
+                default:
+                    if (tamanno > 2) {
+                        throw new CYKAlgorithmException("Fomrto produccion no compatible");
+                    }
+
+            }
+       /* }else{
+        if(nonterminal != prueba && Character.isLetter(nonterminal)){
+            throw new CYKAlgorithmException("El No Terminal no se adpata al formato");
+        } else{
+            if(noTerminales.contains(nonterminal)){
+                throw new CYKAlgorithmException(" El no terminal no est definido");
+            }
+        }*/
+    }
+        
+        
+        
+        /*char prueba = Character.toLowerCase(nonterminal);
         if(nonterminal != prueba && Character.isLetter(nonterminal)){
             
         }
         throw new UnsupportedOperationException("Not supported yet.");
-    }
+    */}
 
     @Override
     /**
