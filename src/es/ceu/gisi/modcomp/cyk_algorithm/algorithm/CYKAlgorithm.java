@@ -14,7 +14,8 @@ import java.util.Iterator;
  */
 public class CYKAlgorithm implements CYKAlgorithmInterface {
 Set<Character> noTerminales = new HashSet<Character>();
- 
+  Set<Character> Terminales = new HashSet<Character>();
+  char axioma ;
     @Override
     /**
      * Método que añade los elementos no terminales de la gramática.
@@ -24,6 +25,9 @@ Set<Character> noTerminales = new HashSet<Character>();
      */
     public void addNonTerminal(char nonterminal) throws CYKAlgorithmException {
         char prueba = Character.toLowerCase(nonterminal);
+        if(noTerminales.contains(nonterminal)){
+            throw new CYKAlgorithmException("EL Símoblo no terminal ya esta presnete");
+        }
         if(nonterminal != prueba && Character.isLetter(nonterminal)){
            noTerminales.add(nonterminal);
         }else {
@@ -41,11 +45,15 @@ Set<Character> noTerminales = new HashSet<Character>();
      */
     public void addTerminal(char terminal) throws CYKAlgorithmException {
         char prueba = Character.toLowerCase(terminal);
-         Set<Character> Terminales = new HashSet<Character>();
-        if(terminal == prueba && Character.isLetter(terminal)){
-           Terminales.add(terminal);
-        }else {
-            throw new CYKAlgorithmException("EL símobolo no es terminal");
+       
+        if (Terminales.contains(terminal)){
+           throw new CYKAlgorithmException("Elementos ya pertemece a la Gramatica");
+        } else{
+            if(terminal == prueba && Character.isLetter(terminal)){
+                Terminales.add(terminal);
+            }else{
+                throw new CYKAlgorithmException("EL elemento no se adapta al perfil de terminal");
+            }
         }
         //throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -60,7 +68,16 @@ Set<Character> noTerminales = new HashSet<Character>();
      * conjunto de elementos no terminales.
      */
     public void setStartSymbol(char nonterminal) throws CYKAlgorithmException {
-        if (noTerminales.contains(nonterminal)){
+      if(axioma == nonterminal){
+          throw new CYKAlgorithmException("El elemento ya esta definido como Axioma");
+      } else{
+          if(noTerminales.contains(nonterminal)){
+              axioma = nonterminal;
+          } else{
+              throw new CYKAlgorithmException ("El elemento ha de ser NO Terminal");
+          }
+      }
+        /*if (noTerminales.contains(nonterminal)){
             
         }else{
             char prueba = Character.toLowerCase(nonterminal);
@@ -69,7 +86,7 @@ Set<Character> noTerminales = new HashSet<Character>();
         }else {
             throw new CYKAlgorithmException("EL símobolo no es No terminal");
         }
-        }
+        }*/
        // throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -85,6 +102,10 @@ Set<Character> noTerminales = new HashSet<Character>();
      * previamente.
      */
     public void addProduction(char nonterminal, String production) throws CYKAlgorithmException {
+        char prueba = Character.toLowerCase(nonterminal);
+        if(nonterminal != prueba && Character.isLetter(nonterminal)){
+            
+        }
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
