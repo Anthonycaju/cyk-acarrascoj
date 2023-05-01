@@ -2,9 +2,11 @@ package es.ceu.gisi.modcomp.cyk_algorithm.algorithm;
 
 import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.exceptions.CYKAlgorithmException;
 import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.interfaces.CYKAlgorithmInterface;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 /**
  * Esta clase contiene la implementación de la interfaz CYKAlgorithmInterface
  * que establece los métodos necesarios para el correcto funcionamiento del
@@ -16,6 +18,8 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
 Set<Character> noTerminales = new HashSet<Character>();
   Set<Character> Terminales = new HashSet<Character>();
   char axioma ;
+ HashMap<Character, Character> ProduccionesTerminales = new HashMap<>();
+  HashMap<Character, Set<Character>> ProduccionesNoTerminales = new HashMap<>();
     @Override
     /**
      * Método que añade los elementos no terminales de la gramática.
@@ -108,11 +112,11 @@ Set<Character> noTerminales = new HashSet<Character>();
             if (numeroElementos == 1) {
                 char productionTerminal = production.charAt(0);
                 char prueba = Character.toLowerCase(productionTerminal);
-                if (productionTerminal == prueba && Character.isLetter(productionTerminal)) {
+                if (productionTerminal == prueba && Character.isLetter(productionTerminal) && Terminales.contains(production)) {
 
-                    if (nonterminal == pruebanonTerminal && Character.isLetter(nonterminal)) {
-                        Terminales.add(productionTerminal);
-                        Terminales.add(nonterminal);
+                    if (nonterminal == pruebanonTerminal && Character.isLetter(nonterminal)&& noTerminales.contains(nonterminal)) {
+                       //SE Añada un Terminal a la clave
+                       ProduccionesTerminales.put(nonterminal, productionTerminal);
                     } else {
                         throw new CYKAlgorithmException("La Producccion no se adapata a los Estándares");
                     }
@@ -124,11 +128,12 @@ Set<Character> noTerminales = new HashSet<Character>();
                 char noTerminal2 = production.charAt(1);
                 char pruebanoTerminal1 = Character.toLowerCase(noTerminal1);
                 char pruebanoTerminal2 = Character.toLowerCase(noTerminal2);
-                if (noTerminal1 == pruebanoTerminal1 && Character.isLetter(noTerminal1) && noTerminal2 == pruebanoTerminal2 && Character.isLetter(noTerminal2)) {
+                if (noTerminal1 == pruebanoTerminal1 && Character.isLetter(noTerminal1) && noTerminal2 == pruebanoTerminal2 && Character.isLetter(noTerminal2)&& Terminales.contains(nonterminal)&& noTerminales.contains(noTerminal1) &&noTerminales.contains(noTerminal2)) {
                     if (pruebanonTerminal == nonterminal && Character.isLetter(nonterminal)) {
-                        noTerminales.add(noTerminal1);
-                        noTerminales.add(noTerminal2);
-                        Terminales.add(nonterminal);
+                        Set<Character> produccionesnonTerminales = new HashSet<>();
+                        produccionesnonTerminales.add(noTerminal1);
+                        produccionesnonTerminales.add(noTerminal2);
+                        ProduccionesNoTerminales.put(nonterminal, produccionesnonTerminales);
                     } else {
                         throw new CYKAlgorithmException("La Producccion no se adapata a los Estándares");
                     }
