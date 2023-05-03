@@ -106,63 +106,38 @@ Set<Character> noTerminales = new HashSet<Character>();
      * previamente.
      */
     public void addProduction(char nonterminal, String production) throws CYKAlgorithmException {
-        int numeroElementos = production.length();
-        char pruebanonTerminal = Character.toLowerCase(nonterminal);
-        if (numeroElementos <= 2) {
-            if (numeroElementos == 1) {
-                char productionTerminal = production.charAt(0);
-                char prueba = Character.toLowerCase(productionTerminal);
-                if (productionTerminal == prueba && Character.isLetter(productionTerminal) && Terminales.contains(production)) {
-
-                    if (nonterminal == pruebanonTerminal && Character.isLetter(nonterminal)&& noTerminales.contains(nonterminal)) {
-                       //SE Añada un Terminal a la clave
-                       ProduccionesTerminales.put(nonterminal, productionTerminal);
-                    } else {
-                        throw new CYKAlgorithmException("La Producccion no se adapata a los Estándares");
-                    }
+        if (noTerminales.contains(nonterminal) && production.length() == 1) {
+            char Ter = production.charAt(0);
+            if (Terminales.contains(Ter)) {
+                if (!ProduccionesTerminales.containsKey(nonterminal)) {
+                    ProduccionesTerminales.put(nonterminal, Ter);
                 } else {
-                    throw new CYKAlgorithmException("La Producccion no se adapata a los Estándares");
+                    throw new CYKAlgorithmException("");
                 }
-            } else if (numeroElementos == 2) {
-                char noTerminal1 = production.charAt(0);
-                char noTerminal2 = production.charAt(1);
-                char pruebanoTerminal1 = Character.toLowerCase(noTerminal1);
-                char pruebanoTerminal2 = Character.toLowerCase(noTerminal2);
-                if (noTerminal1 == pruebanoTerminal1 && Character.isLetter(noTerminal1) && noTerminal2 == pruebanoTerminal2 && Character.isLetter(noTerminal2)&& Terminales.contains(nonterminal)&& noTerminales.contains(noTerminal1) &&noTerminales.contains(noTerminal2)) {
-                    if (pruebanonTerminal == nonterminal && Character.isLetter(nonterminal)) {
-                        Set<Character> produccionesnonTerminales = new HashSet<>();
-                        produccionesnonTerminales.add(noTerminal1);
-                        produccionesnonTerminales.add(noTerminal2);
-                        ProduccionesNoTerminales.put(nonterminal, produccionesnonTerminales);
-                    } else {
-                        throw new CYKAlgorithmException("La Producccion no se adapata a los Estándares");
-                    }
+            } else {
+                throw new CYKAlgorithmException("");
+            }
+        } else if (noTerminales.contains(nonterminal) && production.length() == 2) {
+            char noTer1 = production.charAt(0);
+            char noTer2 = production.charAt(1);
+            if (noTerminales.contains(noTer1) && noTerminales.contains(noTer2)) {
+                Set<Character> annadir = new HashSet<>();
+                annadir.add(noTer2);
+                annadir.add(noTer1);
+                if (!ProduccionesNoTerminales.containsKey(nonterminal)
+                        || !ProduccionesNoTerminales.get(nonterminal).equals(annadir)) {
+                    ProduccionesNoTerminales.put(nonterminal, annadir);
                 } else {
-                    throw new CYKAlgorithmException("La Producccion no se adapata a los Estándares");
+                    throw new CYKAlgorithmException("");
                 }
+            } else {
+                throw new CYKAlgorithmException("");
             }
         } else {
-            throw new CYKAlgorithmException("La Producccion no se adapata a los Estándares");
+            throw new CYKAlgorithmException("");
         }
-       /* }else{
-        if(nonterminal != prueba && Character.isLetter(nonterminal)){
-            throw new CYKAlgorithmException("El No Terminal no se adpata al formato");
-        } else{
-            if(noTerminales.contains(nonterminal)){
-                throw new CYKAlgorithmException(" El no terminal no est definido");
-            }
-        }*/
-    
-        
-        
-        
-        /*char prueba = Character.toLowerCase(nonterminal);
-        if(nonterminal != prueba && Character.isLetter(nonterminal)){
-            
-        }
-        throw new UnsupportedOperationException("Not supported yet.");
-    */
     }
+
     @Override
     /**
      * Método que indica si una palabra pertenece al lenguaje generado por la
