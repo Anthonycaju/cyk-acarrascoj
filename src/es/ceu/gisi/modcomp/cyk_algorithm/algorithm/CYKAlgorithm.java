@@ -202,6 +202,7 @@ Set<Character> noTerminales = new HashSet<Character>();
      * salida podría ser: "S::=AB|BC".
      */
     public String getProductions(char nonterminal) {
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
