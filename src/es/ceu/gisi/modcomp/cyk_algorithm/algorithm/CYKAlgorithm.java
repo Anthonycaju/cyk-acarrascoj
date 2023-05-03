@@ -182,7 +182,11 @@ Set<Character> noTerminales = new HashSet<Character>();
      * dejando el algoritmo listo para volver a insertar una gramática nueva.
      */
     public void removeGrammar() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        ProduccionesTerminales.clear();
+        ProduccionesNoTerminales.clear();
+        Terminales.clear();
+        noTerminales.clear();
+        axioma = '\0';
     }
 
     @Override
