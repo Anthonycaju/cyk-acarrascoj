@@ -202,6 +202,15 @@ Set<Character> noTerminales = new HashSet<Character>();
      * salida podría ser: "S::=AB|BC".
      */
     public String getProductions(char nonterminal) {
+        StringBuilder sb = new StringBuilder();
+        if(noTerminales.contains(nonterminal)){
+            Set<String> noTer = ProduccionesNoTerminales.get(nonterminal);
+            sb.append(nonterminal + "::=");
+            for(String no : noTer ){
+                sb.append(no + "|");
+            }
+            return sb.toString();
+        }
      /*   StringBuilder sb = new StringBuilder();
         if(noTerminales.contains(nonterminal)){
             Set<Character> getNoTer = ProduccionesNoTerminales.get(nonterminal);
