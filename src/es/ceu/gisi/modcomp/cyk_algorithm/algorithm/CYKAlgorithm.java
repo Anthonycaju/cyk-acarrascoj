@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+
 /**
  * Esta clase contiene la implementación de la interfaz CYKAlgorithmInterface
  * que establece los métodos necesarios para el correcto funcionamiento del
@@ -19,7 +20,7 @@ Set<Character> noTerminales = new HashSet<Character>();
   Set<Character> Terminales = new HashSet<Character>();
   char axioma ;
  HashMap<Character, Character> ProduccionesTerminales = new HashMap<>();
-  HashMap<Character, Set<Character>> ProduccionesNoTerminales = new HashMap<>();
+  HashMap<Character, Set<String>> ProduccionesNoTerminales = new HashMap<>();
     @Override
     /**
      * Método que añade los elementos no terminales de la gramática.
@@ -121,12 +122,11 @@ Set<Character> noTerminales = new HashSet<Character>();
             char noTer1 = production.charAt(0);
             char noTer2 = production.charAt(1);
             if (noTerminales.contains(noTer1) && noTerminales.contains(noTer2)) {
-                Set<Character> annadir = new HashSet<>();
-                annadir.add(noTer2);
-                annadir.add(noTer1);
+                Set<String> annadir = new HashSet<>();
+                annadir.add(production);
                 if (!ProduccionesNoTerminales.containsKey(nonterminal)
                         || !ProduccionesNoTerminales.get(nonterminal).equals(annadir)) {
-                    ProduccionesNoTerminales.put(nonterminal, annadir);
+                    ProduccionesNoTerminales.put(nonterminal,annadir);
                 } else {
                     throw new CYKAlgorithmException("");
                 }
@@ -161,7 +161,7 @@ Set<Character> noTerminales = new HashSet<Character>();
      * celdas calculadas por el algoritmo (la visualización debe ser similar al
      * ejemplo proporcionado en el PDF que contiene el paso a paso del
      * algoritmo).
-     *
+¡     *
      * @param word La palabra a verificar, tiene que estar formada sólo por
      * elementos no terminales.
      * @return Un String donde se vea la tabla calculada de manera completa,
@@ -202,9 +202,23 @@ Set<Character> noTerminales = new HashSet<Character>();
      * salida podría ser: "S::=AB|BC".
      */
     public String getProductions(char nonterminal) {
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+     /*   StringBuilder sb = new StringBuilder();
+        if(noTerminales.contains(nonterminal)){
+            Set<Character> getNoTer = ProduccionesNoTerminales.get(nonterminal);
+            sb.append(nonterminal + "::=");
+    for (Character noTer : getNoTer) {
+        sb.append(noTer + "|");
     }
+    return sb.toString();
+        }
+        throw new UnsupportedOperationException("Not supported yet.");
+    }*/
+    
+   
+    
+    throw new UnsupportedOperationException("El elemento no terminal no existe.");
+}
+
 
     @Override
     /**
