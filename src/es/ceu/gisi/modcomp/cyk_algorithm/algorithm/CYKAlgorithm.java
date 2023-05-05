@@ -2,10 +2,12 @@ package es.ceu.gisi.modcomp.cyk_algorithm.algorithm;
 
 import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.exceptions.CYKAlgorithmException;
 import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.interfaces.CYKAlgorithmInterface;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,6 +21,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
 Set<Character> noTerminales = new HashSet<Character>();
   Set<Character> Terminales = new HashSet<Character>();
   char axioma ;
+  Set<String> annadir = new HashSet<>();
  HashMap<Character, Character> ProduccionesTerminales = new HashMap<>();
   HashMap<Character, Set<String>> ProduccionesNoTerminales = new HashMap<>();
     @Override
@@ -118,22 +121,20 @@ Set<Character> noTerminales = new HashSet<Character>();
             } else {
                 throw new CYKAlgorithmException("");
             }
-        } else if (noTerminales.contains(nonterminal) && production.length() == 2) {
-            char noTer1 = production.charAt(0);
-            char noTer2 = production.charAt(1);
-            if (noTerminales.contains(noTer1) && noTerminales.contains(noTer2)) {
-                Set<String> annadir = new HashSet<>();
-                annadir.add(production);
-                if (!ProduccionesNoTerminales.containsKey(nonterminal)
-                        || !ProduccionesNoTerminales.get(nonterminal).equals(annadir)) {
-                    ProduccionesNoTerminales.put(nonterminal,annadir);
-                } else {
-                    throw new CYKAlgorithmException("");
-                }
-            } else {
+        } else if(noTerminales.contains(nonterminal) && production.length() ==2){
+        char noTer1 = production.charAt(0);
+        char noTer2 = production.charAt(1);
+        if (noTerminales.contains(noTer1) && noTerminales.contains(noTer2)){
+            if(!(annadir.contains(production))){
+            annadir.add(production);
+            ProduccionesNoTerminales.put(nonterminal, annadir);
+        }else{
                 throw new CYKAlgorithmException("");
             }
-        } else {
+        }else {
+            throw new CYKAlgorithmException("");
+        }
+    } else{
             throw new CYKAlgorithmException("");
         }
     }
@@ -202,16 +203,15 @@ Set<Character> noTerminales = new HashSet<Character>();
      * salida podría ser: "S::=AB|BC".
      */
     public String getProductions(char nonterminal) {
+    /*  List lista = new ArrayList();
+      Set<String> noTer = ProduccionesNoTerminales.get(nonterminal);
+      StringBuilder sb = new StringBuilder();
+      sb.append(nonterminal + "::=");
+      for(String no: noTer){
+          sb.append(no + "|");
+      }
+      return sb.toString();
         StringBuilder sb = new StringBuilder();
-        if(noTerminales.contains(nonterminal)){
-            Set<String> noTer = ProduccionesNoTerminales.get(nonterminal);
-            sb.append(nonterminal + "::=");
-            for(String no : noTer ){
-                sb.append(no + "|");
-            }
-            return sb.toString();
-        }
-     /*   StringBuilder sb = new StringBuilder();
         if(noTerminales.contains(nonterminal)){
             Set<Character> getNoTer = ProduccionesNoTerminales.get(nonterminal);
             sb.append(nonterminal + "::=");
@@ -222,11 +222,24 @@ Set<Character> noTerminales = new HashSet<Character>();
         }
         throw new UnsupportedOperationException("Not supported yet.");
     }*/
+    List<String> producciones = new ArrayList<>();
+    if (ProduccionesNoTerminales.containsKey(nonterminal)) {
+        Set<String> produccionesNoTerminales = ProduccionesNoTerminales.get(nonterminal);
+        StringBuilder sb = new StringBuilder();
+        sb.append(nonterminal).append("::=");
+        for (String produccion : produccionesNoTerminales) {
+            sb.append(produccion).append("|");
+        }
+        String produccionesStr = sb.toString();
+        produccionesStr = produccionesStr.substring(0, produccionesStr.length() - 1); // Elimina la última barra
+        producciones.add(produccionesStr);
+        return produccionesStr;
+    } else 
+     throw new UnsupportedOperationException("Not supported yet.");
     
-   
-    
-    throw new UnsupportedOperationException("El elemento no terminal no existe.");
 }
+
+
 
 
     @Override
