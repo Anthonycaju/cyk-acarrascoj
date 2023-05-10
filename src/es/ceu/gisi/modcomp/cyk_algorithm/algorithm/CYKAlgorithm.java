@@ -110,32 +110,36 @@ Set<Character> noTerminales = new HashSet<Character>();
      * previamente.
      */
     public void addProduction(char nonterminal, String production) throws CYKAlgorithmException {
-        if (noTerminales.contains(nonterminal) && production.length() == 1) {
-            char Ter = production.charAt(0);
-            if (Terminales.contains(Ter)) {
-                if (!ProduccionesTerminales.containsKey(nonterminal)) {
-                    ProduccionesTerminales.put(nonterminal, Ter);
+        int elementos = production.length();
+        if (elementos == 1) {
+            char ter = production.charAt(0);
+            if (noTerminales.contains(nonterminal) && Terminales.contains(ter)) {
+                ProduccionesTerminales.put(nonterminal, ter);
+            } else {
+                throw new CYKAlgorithmException("Mal  terminal");
+            }
+        } else if (elementos == 2) {
+            char no1 = production.charAt(0);
+            char no2 = production.charAt(1);
+            if (noTerminales.contains(nonterminal) && noTerminales.contains(no1) && noTerminales.contains(no2)) {
+                if (ProduccionesNoTerminales.get(nonterminal) != null) {
+                    Set<String> pro = new HashSet<>(ProduccionesNoTerminales.get(nonterminal));
+                    if (pro.contains(production)) {
+                        throw new CYKAlgorithmException("Mal noterminal rfepetido");
+                    } else {
+                        pro.add(production);
+                        ProduccionesNoTerminales.put(nonterminal, pro);
+                    }
                 } else {
-                    throw new CYKAlgorithmException("");
+                    Set<String> si = new HashSet<>();
+                    si.add(production);
+                    ProduccionesNoTerminales.put(nonterminal, si);
                 }
             } else {
-                throw new CYKAlgorithmException("");
+                throw new CYKAlgorithmException("Mal noterminal");
             }
-        } else if(noTerminales.contains(nonterminal) && production.length() ==2){
-        char noTer1 = production.charAt(0);
-        char noTer2 = production.charAt(1);
-        if (noTerminales.contains(noTer1) && noTerminales.contains(noTer2)){
-            if(!(annadir.contains(production))){
-            annadir.add(production);
-            ProduccionesNoTerminales.put(nonterminal, annadir);
-        }else{
-                throw new CYKAlgorithmException("");
-            }
-        }else {
-            throw new CYKAlgorithmException("");
-        }
-    } else{
-            throw new CYKAlgorithmException("");
+        } else {
+            throw new CYKAlgorithmException("Mal");
         }
     }
 
