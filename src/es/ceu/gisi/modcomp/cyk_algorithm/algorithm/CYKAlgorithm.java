@@ -226,26 +226,31 @@ Set<Character> noTerminales = new HashSet<Character>();
         }
         throw new UnsupportedOperationException("Not supported yet.");
     }*/
-    List<String> producciones = new ArrayList<>();
     if (ProduccionesNoTerminales.containsKey(nonterminal)) {
-        Set<String> produccionesNoTerminales = ProduccionesNoTerminales.get(nonterminal);
+        Set<String> proNoTerminales = ProduccionesNoTerminales.get(nonterminal);
         StringBuilder sb = new StringBuilder();
         sb.append(nonterminal).append("::=");
-        for (String produccion : produccionesNoTerminales) {
+        for (String produccion : proNoTerminales) {
             sb.append(produccion).append("|");
         }
-        String produccionesStr = sb.toString();
-        produccionesStr = produccionesStr.substring(0, produccionesStr.length() - 1); // Elimina la última barra
-        producciones.add(produccionesStr);
-        return produccionesStr;
-    } else 
-     throw new UnsupportedOperationException("Not supported yet.");
-    
-}
+        if (ProduccionesTerminales.containsKey(nonterminal)) {
+            char ter = ProduccionesTerminales.get(nonterminal);
+            sb.append(ter);
+        }
+        String produccionesSinterminal = sb.toString();
+        if(!(ProduccionesTerminales.containsKey(nonterminal))){
+        produccionesSinterminal = produccionesSinterminal.substring(0, produccionesSinterminal.length() - 1);
+        }
+        return produccionesSinterminal;
+    } else if (ProduccionesTerminales.containsKey(nonterminal)) {
+        char ter = ProduccionesTerminales.get(nonterminal);
+        StringBuilder b = new StringBuilder();
+        b.append(nonterminal).append("::=").append(ter);
+        return b.toString();
+    }
+    return "";
 
-
-
-
+  }
     @Override
     /**
      * Devuelve un String con la gramática completa.
