@@ -157,8 +157,10 @@ Set<Character> noTerminales = new HashSet<Character>();
      * gramática es vacía o si el autómata carece de axioma.
      */
     public boolean isDerived(String word) throws CYKAlgorithmException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    return false;
     }
+
+    
 
     @Override
     /**
@@ -259,7 +261,18 @@ Set<Character> noTerminales = new HashSet<Character>();
      * elementos no terminales.
      */
     public String getGrammar() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       StringBuilder sb = new StringBuilder();
+       Set<Character>elementos = new HashSet<>(ProduccionesNoTerminales.keySet());
+       Set<Character> elementosAnnadir = new HashSet<>(ProduccionesTerminales.keySet());
+       for(Character annadir: elementosAnnadir){
+           if(!(elementos.contains(annadir))){
+               elementos.add(annadir);
+           }
+       }
+       for(Character el: elementos){
+           sb.append( getProductions(el)).append(";");
+       }
+       return sb.toString();
     }
 
 }
