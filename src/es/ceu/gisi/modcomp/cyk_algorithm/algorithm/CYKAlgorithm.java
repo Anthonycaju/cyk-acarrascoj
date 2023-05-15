@@ -180,38 +180,28 @@ Set<Character> noTerminales = new HashSet<Character>();
      * gramática es vacía o si el autómata carece de axioma.
      */
     public String algorithmStateToString(String word) throws CYKAlgorithmException {
-          //comprobacion validez word
-        if (noTerminales.isEmpty() || Terminales.isEmpty() || axioma == '\0') {
-            throw new CYKAlgorithmException("Gramática inválida");
-        }
-        for (int i = 0; i < word.length(); i++) {
-            char terminal = word.charAt(i);
-            if (!Terminales.contains(terminal)) {
-                throw new CYKAlgorithmException("La palabra contiene elementos no terminales inválidos");
+         int tamanno = (word.length()-1);
+   StringBuilder result = new StringBuilder();
+   String[][] tablero = new String [tamanno][tamanno];
+   
+    /* tablero[0][0]= "a";
+     tablero[0][1]= "b";
+       tablero[1][0]="c"; */
+ // Construir el lector de la tabla
+    for (int i = 0; i < tamanno; i++) {
+        for (int j = 0; j < tamanno - i; j++) {
+            if (tablero[i][j] != null) {
+                result.append("[").append(tablero[i][j]).append("] ");
+            } else {
+                result.append("[ ] ");
             }
         }
-        //Cabecera
-        Set<Character> cabecera = new HashSet<>(ProduccionesTerminales.keySet());
-        StringBuilder sb = new StringBuilder();
-        int tamanno = word.length();
-        String [][] tablero = new String [tamanno][tamanno];
-        for (int i = 0; i< tamanno;i++){
-              char prueba = word.charAt(i);
-        for(Character cabe : cabecera){
-            if(ProduccionesTerminales.get(cabe).equals(prueba)){
-                sb.append(cabe);
-            }
-        }
-        tablero [0][i] = sb.toString();       
-        }
-        //Resto de celdas
-        
-
-        
-        
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+        result.append("\n");
     }
+    
+    return result.toString();
+}
+        
 
     @Override
     /**
