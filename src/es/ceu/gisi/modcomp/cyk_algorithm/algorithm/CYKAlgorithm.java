@@ -18,6 +18,7 @@ import java.util.Map;
  * @author Sergio Saugar García <sergio.saugargarcia@ceu.es>
  */
 public class CYKAlgorithm implements CYKAlgorithmInterface {
+    Boolean derivada = false;
 Set<Character> noTerminales = new HashSet<Character>();
   Set<Character> Terminales = new HashSet<Character>();
   char axioma ;
@@ -179,6 +180,36 @@ Set<Character> noTerminales = new HashSet<Character>();
      * gramática es vacía o si el autómata carece de axioma.
      */
     public String algorithmStateToString(String word) throws CYKAlgorithmException {
+          //comprobacion validez word
+        if (noTerminales.isEmpty() || Terminales.isEmpty() || axioma == '\0') {
+            throw new CYKAlgorithmException("Gramática inválida");
+        }
+        for (int i = 0; i < word.length(); i++) {
+            char terminal = word.charAt(i);
+            if (!Terminales.contains(terminal)) {
+                throw new CYKAlgorithmException("La palabra contiene elementos no terminales inválidos");
+            }
+        }
+        //Cabecera
+        Set<Character> cabecera = new HashSet<>(ProduccionesTerminales.keySet());
+        StringBuilder sb = new StringBuilder();
+        int tamanno = word.length();
+        String [][] tablero = new String [tamanno][tamanno];
+        for (int i = 0; i< tamanno;i++){
+              char prueba = word.charAt(i);
+        for(Character cabe : cabecera){
+            if(ProduccionesTerminales.get(cabe).equals(prueba)){
+                sb.append(cabe);
+            }
+        }
+        tablero [0][i] = sb.toString();       
+        }
+        //Resto de celdas
+        
+
+        
+        
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
