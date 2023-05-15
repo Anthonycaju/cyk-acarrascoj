@@ -183,7 +183,31 @@ Set<Character> noTerminales = new HashSet<Character>();
          int tamanno = (word.length()-1);
    StringBuilder result = new StringBuilder();
    String[][] tablero = new String [tamanno][tamanno];
-   
+   //comprobacion validez word
+        if (noTerminales.isEmpty() || Terminales.isEmpty() || axioma == '\0') {
+            throw new CYKAlgorithmException("Gramática inválida");
+        }
+        for (int i = 0; i < word.length(); i++) {
+            char terminal = word.charAt(i);
+            if (!Terminales.contains(terminal)) {
+                throw new CYKAlgorithmException("La palabra contiene elementos no terminales inválidos");
+            }
+        }
+        //Cabecera
+        Set<Character> cabecera = new HashSet<>(ProduccionesTerminales.keySet());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i< tamanno;i++){
+              char prueba = word.charAt(i);
+        for(Character cabe : cabecera){
+            if(ProduccionesTerminales.get(cabe).equals(prueba)){
+              if(tablero[0][i]==null){
+                  tablero[0][i] = String.valueOf(cabe);
+              } else{
+                  tablero[0][i] += String.valueOf(cabe);
+              }
+            }
+        }
+    }
     /* tablero[0][0]= "a";
      tablero[0][1]= "b";
        tablero[1][0]="c"; */
