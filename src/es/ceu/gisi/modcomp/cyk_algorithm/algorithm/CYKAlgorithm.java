@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Sergio Saugar García <sergio.saugargarcia@ceu.es>
  */
 public class CYKAlgorithm implements CYKAlgorithmInterface {
-    Boolean derivada = false;
+    Map <Character, String> pru = new HashMap<>();
 Set<Character> noTerminales = new HashSet<Character>();
   Set<Character> Terminales = new HashSet<Character>();
   char axioma ;
@@ -208,10 +208,14 @@ Set<Character> noTerminales = new HashSet<Character>();
             }
         }
     }
-    /* tablero[0][0]= "a";
-     tablero[0][1]= "b";
-       tablero[1][0]="c"; */
- // Construir el lector de la tabla
+        //Resto de Filas 
+          for (int i = 1; i < tamanno; i++) {
+        for (int j = 0; j < tamanno - i; j++) {
+            String hola = "hola";
+            tablero [i][j] = hola;
+        }
+        }
+
     for (int i = 0; i < tamanno; i++) {
         for (int j = 0; j < tamanno - i; j++) {
             if (tablero[i][j] != null) {
@@ -225,7 +229,37 @@ Set<Character> noTerminales = new HashSet<Character>();
     
     return result.toString();
 }
-        
+    /*
+    Metodo en Sucio que calcula el producto cartesiano de los símbolos de dos palabras 
+    y comprueba si son valor de algun hashMap
+    */
+        public String palabra(String uno, String dos){
+    Set<Character> diver = new HashSet<>(pru.keySet());
+    StringBuilder d = new StringBuilder();
+    Set<Character> unoC = new HashSet<>();
+    Set<Character> dosC = new HashSet<>();
+    for (int i = 0; i<uno.length();i++){
+        char c = uno.charAt(i);
+        unoC.add(c);
+    }
+    for ( int i = 0; i<dos.length(); i++){
+        char c = dos.charAt(i);
+        dosC.add(c);
+    }
+  for(Character c : unoC){
+    for(Character e: dosC){
+        String g = String.valueOf(c)+ String.valueOf(e);
+        if(g!= null){
+            for(Character dr : diver){
+                if(pru.get(dr).equals(g)){
+                    d.append(dr);
+                }
+            }
+        }
+    }
+  }
+  return d.toString();
+}
 
     @Override
     /**
