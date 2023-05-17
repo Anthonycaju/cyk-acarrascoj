@@ -468,17 +468,19 @@ Set<Character> noTerminales = new HashSet<Character>();
      Set<Character> ax = new HashSet<>();
    int a = tamanno-1;
    int b = 0;
+   boolean verdadero = false;
   String h = tablero[a][b];
           for(int i = 0; i < h.length(); i++){
              
               ax.add(h.charAt(i));
           }
           if(ax.contains(axioma)){
-              return true;
-          }else{
+              verdadero = true;
+          }/*else{
             return false;  
-          }
-    
+          }*/
+       
+    return verdadero;
     }
 
 }
