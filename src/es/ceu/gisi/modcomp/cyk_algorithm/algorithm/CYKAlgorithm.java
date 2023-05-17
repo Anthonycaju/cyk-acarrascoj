@@ -158,7 +158,7 @@ Set<Character> noTerminales = new HashSet<Character>();
      * gramática es vacía o si el autómata carece de axioma.
      */
     public boolean isDerived(String word) throws CYKAlgorithmException {
-    return false;
+     return this.algoritmoDerived(word);
     }
 
     
@@ -209,10 +209,21 @@ Set<Character> noTerminales = new HashSet<Character>();
         }
     }
         //Resto de Filas 
+       //Resto de Filas 
           for (int i = 1; i < tamanno; i++) {
         for (int j = 0; j < tamanno - i; j++) {
-            String hola = "hola";
-            tablero [i][j] = hola;
+        /*    String hola = "hola";
+            tablero [i][j] = hola;*/
+            int a = 0;
+            int b= 1;
+            while(a<i){
+                if(tablero [i][j]==null){
+                   tablero[i][j]=this.palabra(tablero[a][j+a], tablero[a][j+b]); 
+                }else{
+                tablero[i][j]+=this.palabra(tablero[a][j+a], tablero[a][j+b]);
+                }
+                a++;
+            }
         }
         }
 
@@ -233,32 +244,51 @@ Set<Character> noTerminales = new HashSet<Character>();
     Metodo en Sucio que calcula el producto cartesiano de los símbolos de dos palabras 
     y comprueba si son valor de algun hashMap
     */
-        public String palabra(String uno, String dos){
-    Set<Character> diver = new HashSet<>(pru.keySet());
+ public String palabra(String uno, String dos) {
+    Set<Character> diver = new HashSet<>(ProduccionesNoTerminales.keySet());
     StringBuilder d = new StringBuilder();
     Set<Character> unoC = new HashSet<>();
     Set<Character> dosC = new HashSet<>();
-    for (int i = 0; i<uno.length();i++){
+    
+
+    if (uno == null || dos == null) {
+        return ""; // Retorna una cadena vacía si alguna de las cadenas es nula
+    }
+
+    for (int i = 0; i < uno.length(); i++) {
         char c = uno.charAt(i);
         unoC.add(c);
     }
-    for ( int i = 0; i<dos.length(); i++){
+
+    for (int i = 0; i < dos.length(); i++) {
         char c = dos.charAt(i);
         dosC.add(c);
     }
-  for(Character c : unoC){
-    for(Character e: dosC){
-        String g = String.valueOf(c)+ String.valueOf(e);
-        if(g!= null){
+
+    
+      //  
+      
+             for (Character c : unoC) {
+        for (Character e : dosC) {
             for(Character dr : diver){
-                if(pru.get(dr).equals(g)){
+                Set <String> f = new HashSet<>(ProduccionesNoTerminales.get(dr));
+           String  g = String.valueOf(c) + String.valueOf(e);
+                 if(f.contains(g)){
+                     d.append(dr);
+                 }
+               //d.append(g);
+            }
+           
+            
+              
+            /*for(Character dr: diver){
+                if(ProduccionesNoTerminales.get(dr).equals(g)){
                     d.append(dr);
-                }
+                }*/
+          //  d.append(g);
             }
         }
-    }
-  }
-  return d.toString();
+    return d.toString();
 }
 
     @Override
@@ -352,6 +382,103 @@ Set<Character> noTerminales = new HashSet<Character>();
            sb.append( getProductions(el)).append(";");
        }
        return sb.toString();
+    }
+    public boolean algoritmoDerived(String word) throws CYKAlgorithmException {
+        int tamanno = word.length();
+    StringBuilder result = new StringBuilder();
+    String[][] tablero = new String[tamanno][tamanno];
+    StringBuilder bs = new StringBuilder();
+    Set<String> combinaciones = new HashSet<>();
+    Set<Character> key = new HashSet<>(ProduccionesNoTerminales.keySet());
+
+    // Comprobación de validez de la palabra
+    if (noTerminales.isEmpty() || Terminales.isEmpty() || axioma == '\0') {
+        throw new CYKAlgorithmException("Gramática inválida");
+    }
+
+    for (int i = 0; i < word.length(); i++) {
+        char terminal = word.charAt(i);
+        if (!Terminales.contains(terminal)) {
+            throw new CYKAlgorithmException("La palabra contiene elementos no terminales inválidos");
+        }
+    }
+
+    // Cabecera
+    Set<Character> cabecera = new HashSet<>(ProduccionesTerminales.keySet());
+
+    for (int i = 0; i < tamanno; i++) {
+        char prueba = word.charAt(i);
+        for (Character cabe : cabecera) {
+            if (ProduccionesTerminales.get(cabe).equals(prueba)) {
+                if (tablero[0][i] == null) {
+                    tablero[0][i] = String.valueOf(cabe);
+                } else {
+                    tablero[0][i] += String.valueOf(cabe);
+                }
+            }
+        }
+    }
+
+    // Resto de celdas
+    
+ //Resto de Filas 
+          for (int i = 1; i < tamanno; i++) {
+        for (int j = 0; j < tamanno - i; j++) {
+        /*    String hola = "hola";
+            tablero [i][j] = hola;*/
+            int a = 0;
+            int b= 1;
+            while(a<i){
+                if(tablero [i][j]==null){
+                   tablero[i][j]=this.palabra(tablero[a][j+a], tablero[a][j+b]); 
+                }else{
+                tablero[i][j]+=this.palabra(tablero[a][j+a], tablero[a][j+b]);
+                }
+                a++;
+            }
+        }
+        }
+/*    Set<Character> driver = new HashSet<>(ProduccionesNoTerminales.keySet());
+    StringBuilder d = new StringBuilder();
+    Set<Character> unoC = new HashSet<>();
+    Set<Character> dosC = new HashSet<>();
+    for (int i = 0; i<uno.length();i++){
+        char c = uno.charAt(i);
+        unoC.add(c);
+    }
+    for ( int i = 0; i<dos.length(); i++){
+        char c = dos.charAt(i);
+        dosC.add(c);
+    }
+  for(Character c : unoC){
+    for(Character e: dosC){
+        String g = String.valueOf(c)+ String.valueOf(e);
+        if(g!= null){
+            for(Character dr : diver){
+                if(ProduccionesNoTerminales.get(dr).equals(g)){
+                    d.append(dr);
+                }
+            }
+        }
+    }
+  }
+  return d.toString();
+}*/
+    // Construir el String con todas las celdas calculadas
+     Set<Character> ax = new HashSet<>();
+   int a = tamanno-1;
+   int b = 0;
+  String h = tablero[a][b];
+          for(int i = 0; i < h.length(); i++){
+             
+              ax.add(h.charAt(i));
+          }
+          if(ax.contains(axioma)){
+              return true;
+          }else{
+            return false;  
+          }
+    
     }
 
 }
