@@ -18,13 +18,11 @@ import java.util.Map;
  * @author Sergio Saugar García <sergio.saugargarcia@ceu.es>
  */
 public class CYKAlgorithm implements CYKAlgorithmInterface {
-    Map <Character, String> pru = new HashMap<>();
-Set<Character> noTerminales = new HashSet<Character>();
-  Set<Character> Terminales = new HashSet<Character>();
-  char axioma ;
-  Set<String> annadir = new HashSet<>();
- HashMap<Character, Character> ProduccionesTerminales = new HashMap<>();
-  HashMap<Character, Set<String>> ProduccionesNoTerminales = new HashMap<>();
+    Set<Character> noTerminales = new HashSet<>();
+    Set<Character> terminales = new HashSet<>();
+    char axioma;
+    HashMap<Character, Character> produccionesTerminales = new HashMap<>();
+    HashMap<Character, Set<String>> produccionesNoTerminales = new HashMap<>();
     @Override
     /**
      * Método que añade los elementos no terminales de la gramática.
@@ -34,15 +32,14 @@ Set<Character> noTerminales = new HashSet<Character>();
      */
     public void addNonTerminal(char nonterminal) throws CYKAlgorithmException {
         char prueba = Character.toLowerCase(nonterminal);
-        if(noTerminales.contains(nonterminal)){
+        if (noTerminales.contains(nonterminal)) {
             throw new CYKAlgorithmException("EL Símoblo no terminal ya esta presnete");
         }
-        if(nonterminal != prueba && Character.isLetter(nonterminal)){
-           noTerminales.add(nonterminal);
-        }else {
+        if (nonterminal != prueba && Character.isLetter(nonterminal)) {
+            noTerminales.add(nonterminal);
+        } else {
             throw new CYKAlgorithmException("EL símobolo no es No terminal");
         }
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -54,17 +51,16 @@ Set<Character> noTerminales = new HashSet<Character>();
      */
     public void addTerminal(char terminal) throws CYKAlgorithmException {
         char prueba = Character.toLowerCase(terminal);
-       
-        if (Terminales.contains(terminal)){
-           throw new CYKAlgorithmException("Elementos ya pertemece a la Gramatica");
-        } else{
-            if(terminal == prueba && Character.isLetter(terminal)){
-                Terminales.add(terminal);
-            }else{
+
+        if (terminales.contains(terminal)) {
+            throw new CYKAlgorithmException("Elementos ya pertemece a la Gramatica");
+        } else {
+            if (terminal == prueba && Character.isLetter(terminal)) {
+                terminales.add(terminal);
+            } else {
                 throw new CYKAlgorithmException("EL elemento no se adapta al perfil de terminal");
             }
         }
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -77,26 +73,15 @@ Set<Character> noTerminales = new HashSet<Character>();
      * conjunto de elementos no terminales.
      */
     public void setStartSymbol(char nonterminal) throws CYKAlgorithmException {
-      if(axioma == nonterminal){
-          throw new CYKAlgorithmException("El elemento ya esta definido como Axioma");
-      } else{
-          if(noTerminales.contains(nonterminal)){
-              axioma = nonterminal;
-          } else{
-              throw new CYKAlgorithmException ("El elemento ha de ser NO Terminal");
-          }
-      }
-        /*if (noTerminales.contains(nonterminal)){
-            
-        }else{
-            char prueba = Character.toLowerCase(nonterminal);
-        if(nonterminal != prueba && Character.isLetter(nonterminal)){
-           noTerminales.add(nonterminal);
-        }else {
-            throw new CYKAlgorithmException("EL símobolo no es No terminal");
+        if (axioma == nonterminal) {
+            throw new CYKAlgorithmException("El elemento ya esta definido como Axioma");
+        } else {
+            if (noTerminales.contains(nonterminal)) {
+                axioma = nonterminal;
+            } else {
+                throw new CYKAlgorithmException("El elemento ha de ser NO Terminal");
+            }
         }
-        }*/
-       // throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -114,8 +99,8 @@ Set<Character> noTerminales = new HashSet<Character>();
         int elementos = production.length();
         if (elementos == 1) {
             char ter = production.charAt(0);
-            if (noTerminales.contains(nonterminal) && Terminales.contains(ter)) {
-                ProduccionesTerminales.put(nonterminal, ter);
+            if (noTerminales.contains(nonterminal) && terminales.contains(ter)) {
+                produccionesTerminales.put(nonterminal, ter);
             } else {
                 throw new CYKAlgorithmException("Mal  terminal");
             }
@@ -123,18 +108,18 @@ Set<Character> noTerminales = new HashSet<Character>();
             char no1 = production.charAt(0);
             char no2 = production.charAt(1);
             if (noTerminales.contains(nonterminal) && noTerminales.contains(no1) && noTerminales.contains(no2)) {
-                if (ProduccionesNoTerminales.get(nonterminal) != null) {
-                    Set<String> pro = new HashSet<>(ProduccionesNoTerminales.get(nonterminal));
+                if (produccionesNoTerminales.get(nonterminal) != null) {
+                    Set<String> pro = new HashSet<>(produccionesNoTerminales.get(nonterminal));
                     if (pro.contains(production)) {
                         throw new CYKAlgorithmException("Mal noterminal rfepetido");
                     } else {
                         pro.add(production);
-                        ProduccionesNoTerminales.put(nonterminal, pro);
+                        produccionesNoTerminales.put(nonterminal, pro);
                     }
                 } else {
                     Set<String> si = new HashSet<>();
                     si.add(production);
-                    ProduccionesNoTerminales.put(nonterminal, si);
+                    produccionesNoTerminales.put(nonterminal, si);
                 }
             } else {
                 throw new CYKAlgorithmException("Mal noterminal");
@@ -186,65 +171,64 @@ Set<Character> noTerminales = new HashSet<Character>();
      * gramática es vacía o si el autómata carece de axioma.
      */
     public String algorithmStateToString(String word) throws CYKAlgorithmException {
-         int tamanno = (word.length()-1);
-   StringBuilder result = new StringBuilder();
-   String[][] tablero = new String [tamanno][tamanno];
-   //comprobacion validez word
-        if (noTerminales.isEmpty() || Terminales.isEmpty() || axioma == '\0') {
+        int tamanno = (word.length() - 1);
+        StringBuilder result = new StringBuilder();
+        String[][] tablero = new String[tamanno][tamanno];
+        //comprobacion validez word
+        if (noTerminales.isEmpty() || terminales.isEmpty() || axioma == '\0') {
             throw new CYKAlgorithmException("Gramática inválida");
         }
         for (int i = 0; i < word.length(); i++) {
             char terminal = word.charAt(i);
-            if (!Terminales.contains(terminal)) {
+            if (!terminales.contains(terminal)) {
                 throw new CYKAlgorithmException("La palabra contiene elementos no terminales inválidos");
             }
         }
         //Cabecera
-        Set<Character> cabecera = new HashSet<>(ProduccionesTerminales.keySet());
+        Set<Character> cabecera = new HashSet<>(produccionesTerminales.keySet());
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i< tamanno;i++){
-              char prueba = word.charAt(i);
-        for(Character cabe : cabecera){
-            if(ProduccionesTerminales.get(cabe).equals(prueba)){
-              if(tablero[0][i]==null){
-                  tablero[0][i] = String.valueOf(cabe);
-              } else{
-                  tablero[0][i] += String.valueOf(cabe);
-              }
-            }
-        }
-    }
-        //Resto de Filas 
-       //Resto de Filas 
-          for (int i = 1; i < tamanno; i++) {
-        for (int j = 0; j < tamanno - i; j++) {
-        /*    String hola = "hola";
-            tablero [i][j] = hola;*/
-            int a = 0;
-            int b= 1;
-            while(a<i){
-                if(tablero [i][j]==null){
-                   tablero[i][j]=this.Concat(tablero[a][j+a], tablero[a][j+b]); 
-                }else{
-                tablero[i][j]+=this.Concat(tablero[a][j+a], tablero[a][j+b]);
+        for (int i = 0; i < tamanno; i++) {
+            char prueba = word.charAt(i);
+            for (Character cabe : cabecera) {
+                if (produccionesTerminales.get(cabe).equals(prueba)) {
+                    if (tablero[0][i] == null) {
+                        tablero[0][i] = String.valueOf(cabe);
+                    } else {
+                        tablero[0][i] += String.valueOf(cabe);
+                    }
                 }
-                a++;
             }
         }
+        //Resto de Filas 
+        for (int i = 1; i < tamanno; i++) {
+            for (int j = 0; j < tamanno - i; j++) {
+                /*    String hola = "hola";
+            tablero [i][j] = hola;*/
+                int a = 0;
+                int b = 1;
+                while (a < i) {
+                    if (tablero[i][j] == null) {
+                        tablero[i][j] = this.Concat(tablero[a][j + a], tablero[a][j + b]);
+                    } else {
+                        tablero[i][j] += this.Concat(tablero[a][j + a], tablero[a][j + b]);
+                    }
+                    a++;
+                }
+            }
         }
 
-    for (int i = 0; i < tamanno; i++) {
-        for (int j = 0; j < tamanno - i; j++) {
-            if (tablero[i][j] != null) {
-                result.append("[").append(tablero[i][j]).append("] ");
-            } else {
-                result.append("[ ] ");
+        for (int i = 0; i < tamanno; i++) {
+            for (int j = 0; j < tamanno - i; j++) {
+                if (tablero[i][j] != null) {
+                    result.append("[").append(tablero[i][j]).append("] ");
+                } else {
+                    result.append("[ ] ");
+                }
             }
+            result.append("\n");
         }
-        result.append("\n");
+        return result.toString();
     }
-    return result.toString();
-}
    /**
     * Método que genera el producto cartesiano, es decir, todas las concatenaciones posibles, de todos los caracteres
     * de dos palabras y posteriormente las compara con las producciones de los cabezañes de las gramaticas para ver
@@ -255,39 +239,37 @@ Set<Character> noTerminales = new HashSet<Character>();
     * @return  d.toString(); es decir, un conjunto de caracteres, formado por los cabezales que generar como producción
     * alguna de las combinaxciones posibles entre los elementos de uno y dos.
     */
- public String Concat(String uno, String dos) {
-    Set<Character> diver = new HashSet<>(ProduccionesNoTerminales.keySet());
-    StringBuilder d = new StringBuilder();
-    Set<Character> unoC = new HashSet<>();
-    Set<Character> dosC = new HashSet<>();
-    
+    public String Concat(String uno, String dos) {
+        Set<Character> diver = new HashSet<>(produccionesNoTerminales.keySet());
+        StringBuilder d = new StringBuilder();
+        Set<Character> unoC = new HashSet<>();
+        Set<Character> dosC = new HashSet<>();
 
-    if (uno == null || dos == null) {
-        return ""; // Retorna una cadena vacía si alguna de las cadenas es nula
-    }
+        if (uno == null || dos == null) {
+            return ""; // Retorna una cadena vacía si alguna de las cadenas es nula
+        }
+        for (int i = 0; i < uno.length(); i++) {
+            char c = uno.charAt(i);
+            unoC.add(c);
+        }
 
-    for (int i = 0; i < uno.length(); i++) {
-        char c = uno.charAt(i);
-        unoC.add(c);
-    }
-
-    for (int i = 0; i < dos.length(); i++) {
-        char c = dos.charAt(i);
-        dosC.add(c);
-    }
-             for (Character c : unoC) {
-        for (Character e : dosC) {
-            for(Character dr : diver){
-                Set <String> f = new HashSet<>(ProduccionesNoTerminales.get(dr));
-           String  g = String.valueOf(c) + String.valueOf(e);
-                 if(f.contains(g)){
-                     d.append(dr);
-                 }
-            }
+        for (int i = 0; i < dos.length(); i++) {
+            char c = dos.charAt(i);
+            dosC.add(c);
+        }
+        for (Character c : unoC) {
+            for (Character e : dosC) {
+                for (Character dr : diver) {
+                    Set<String> f = new HashSet<>(produccionesNoTerminales.get(dr));
+                    String g = String.valueOf(c) + String.valueOf(e);
+                    if (f.contains(g)) {
+                        d.append(dr);
+                    }
+                }
             }
         }
-    return d.toString();
-}
+        return d.toString();
+    }
 
     @Override
     /**
@@ -296,9 +278,9 @@ Set<Character> noTerminales = new HashSet<Character>();
      * dejando el algoritmo listo para volver a insertar una gramática nueva.
      */
     public void removeGrammar() {
-        ProduccionesTerminales.clear();
-        ProduccionesNoTerminales.clear();
-        Terminales.clear();
+        produccionesTerminales.clear();
+        produccionesNoTerminales.clear();
+        terminales.clear();
         noTerminales.clear();
         axioma = '\0';
     }
@@ -316,50 +298,31 @@ Set<Character> noTerminales = new HashSet<Character>();
      * salida podría ser: "S::=AB|BC".
      */
     public String getProductions(char nonterminal) {
-    /*  List lista = new ArrayList();
-      Set<String> noTer = ProduccionesNoTerminales.get(nonterminal);
-      StringBuilder sb = new StringBuilder();
-      sb.append(nonterminal + "::=");
-      for(String no: noTer){
-          sb.append(no + "|");
-      }
-      return sb.toString();
-        StringBuilder sb = new StringBuilder();
-        if(noTerminales.contains(nonterminal)){
-            Set<Character> getNoTer = ProduccionesNoTerminales.get(nonterminal);
-            sb.append(nonterminal + "::=");
-    for (Character noTer : getNoTer) {
-        sb.append(noTer + "|");
-    }
-    return sb.toString();
+        if (produccionesNoTerminales.containsKey(nonterminal)) {
+            Set<String> proNoTerminales = produccionesNoTerminales.get(nonterminal);
+            StringBuilder sb = new StringBuilder();
+            sb.append(nonterminal).append("::=");
+            for (String produccion : proNoTerminales) {
+                sb.append(produccion).append("|");
+            }
+            if (produccionesTerminales.containsKey(nonterminal)) {
+                char ter = produccionesTerminales.get(nonterminal);
+                sb.append(ter);
+            }
+            String produccionesSinterminal = sb.toString();
+            if (!(produccionesTerminales.containsKey(nonterminal))) {
+                produccionesSinterminal = produccionesSinterminal.substring(0, produccionesSinterminal.length() - 1);
+            }
+            return produccionesSinterminal;
+        } else if (produccionesTerminales.containsKey(nonterminal)) {
+            char ter = produccionesTerminales.get(nonterminal);
+            StringBuilder b = new StringBuilder();
+            b.append(nonterminal).append("::=").append(ter);
+            return b.toString();
         }
-        throw new UnsupportedOperationException("Not supported yet.");
-    }*/
-    if (ProduccionesNoTerminales.containsKey(nonterminal)) {
-        Set<String> proNoTerminales = ProduccionesNoTerminales.get(nonterminal);
-        StringBuilder sb = new StringBuilder();
-        sb.append(nonterminal).append("::=");
-        for (String produccion : proNoTerminales) {
-            sb.append(produccion).append("|");
-        }
-        if (ProduccionesTerminales.containsKey(nonterminal)) {
-            char ter = ProduccionesTerminales.get(nonterminal);
-            sb.append(ter);
-        }
-        String produccionesSinterminal = sb.toString();
-        if(!(ProduccionesTerminales.containsKey(nonterminal))){
-        produccionesSinterminal = produccionesSinterminal.substring(0, produccionesSinterminal.length() - 1);
-        }
-        return produccionesSinterminal;
-    } else if (ProduccionesTerminales.containsKey(nonterminal)) {
-        char ter = ProduccionesTerminales.get(nonterminal);
-        StringBuilder b = new StringBuilder();
-        b.append(nonterminal).append("::=").append(ter);
-        return b.toString();
-    }
-    return "";
+        return "";
 
-  }
+    }
     @Override
     /**
      * Devuelve un String con la gramática completa.
@@ -369,8 +332,8 @@ Set<Character> noTerminales = new HashSet<Character>();
      */
     public String getGrammar() {
        StringBuilder sb = new StringBuilder();
-       Set<Character>elementos = new HashSet<>(ProduccionesNoTerminales.keySet());
-       Set<Character> elementosAnnadir = new HashSet<>(ProduccionesTerminales.keySet());
+       Set<Character>elementos = new HashSet<>(produccionesNoTerminales.keySet());
+       Set<Character> elementosAnnadir = new HashSet<>(produccionesTerminales.keySet());
        for(Character annadir: elementosAnnadir){
            if(!(elementos.contains(annadir))){
                elementos.add(annadir);
@@ -390,104 +353,74 @@ Set<Character> noTerminales = new HashSet<Character>();
      * @return True, si el axíoma esta presente en la celda de la priema columna última fila. En caso contrario devuelve un false
      * @throws CYKAlgorithmException 
      */
-    public boolean algoritmoDerived(String word) throws CYKAlgorithmException {  
+    public boolean algoritmoDerived(String word) throws CYKAlgorithmException {
         int tamanno = word.length();
-    StringBuilder result = new StringBuilder();
-    String[][] tablero = new String[tamanno][tamanno];
-    StringBuilder bs = new StringBuilder();
-    Set<String> combinaciones = new HashSet<>();
-    Set<Character> key = new HashSet<>(ProduccionesNoTerminales.keySet());
+        StringBuilder result = new StringBuilder();
+        String[][] tablero = new String[tamanno][tamanno];
+        StringBuilder bs = new StringBuilder();
+        Set<String> combinaciones = new HashSet<>();
+        Set<Character> key = new HashSet<>(produccionesNoTerminales.keySet());
 
-    // Comprobación de validez de la Concat
-    if (noTerminales.isEmpty() || Terminales.isEmpty() || axioma == '\0') {
-        throw new CYKAlgorithmException("Gramática inválida");
-    }
-
-    for (int i = 0; i < word.length(); i++) {
-        char terminal = word.charAt(i);
-        if (!Terminales.contains(terminal)) {
-            throw new CYKAlgorithmException("La palabra contiene elementos no terminales inválidos");
+        // Comprobación de validez de la Concat
+        if (noTerminales.isEmpty() || terminales.isEmpty() || axioma == '\0') {
+            throw new CYKAlgorithmException("Gramática inválida");
         }
-    }
 
-    // Cabecera
-    Set<Character> cabecera = new HashSet<>(ProduccionesTerminales.keySet());
+        for (int i = 0; i < word.length(); i++) {
+            char terminal = word.charAt(i);
+            if (!terminales.contains(terminal)) {
+                throw new CYKAlgorithmException("La palabra contiene elementos no terminales inválidos");
+            }
+        }
 
-    for (int i = 0; i < tamanno; i++) {
-        char prueba = word.charAt(i);
-        for (Character cabe : cabecera) {
-            if (ProduccionesTerminales.get(cabe).equals(prueba)) {
-                if (tablero[0][i] == null) {
-                    tablero[0][i] = String.valueOf(cabe);
-                } else {
-                    tablero[0][i] += String.valueOf(cabe);
+        // Cabecera
+        Set<Character> cabecera = new HashSet<>(produccionesTerminales.keySet());
+
+        for (int i = 0; i < tamanno; i++) {
+            char prueba = word.charAt(i);
+            for (Character cabe : cabecera) {
+                if (produccionesTerminales.get(cabe).equals(prueba)) {
+                    if (tablero[0][i] == null) {
+                        tablero[0][i] = String.valueOf(cabe);
+                    } else {
+                        tablero[0][i] += String.valueOf(cabe);
+                    }
                 }
             }
         }
-    }
 
-    // Resto de celdas
-    
- //Resto de Filas 
-          for (int i = 1; i < tamanno; i++) {
-        for (int j = 0; j < tamanno - i; j++) {
-        /*    String hola = "hola";
+        // Resto de celdas
+        for (int i = 1; i < tamanno; i++) {
+            for (int j = 0; j < tamanno - i; j++) {
+                /*    String hola = "hola";
             tablero [i][j] = hola;*/
-            int a = 0;
-            int b= 1;
-            while(a<i){
-                if(tablero [i][j]==null){
-                   tablero[i][j]=this.Concat(tablero[a][j+a], tablero[a][j+b]); 
-                }else{
-                tablero[i][j]+=this.Concat(tablero[a][j+a], tablero[a][j+b]);
-                }
-                a++;
-            }
-        }
-        }
-/*    Set<Character> driver = new HashSet<>(ProduccionesNoTerminales.keySet());
-    StringBuilder d = new StringBuilder();
-    Set<Character> unoC = new HashSet<>();
-    Set<Character> dosC = new HashSet<>();
-    for (int i = 0; i<uno.length();i++){
-        char c = uno.charAt(i);
-        unoC.add(c);
-    }
-    for ( int i = 0; i<dos.length(); i++){
-        char c = dos.charAt(i);
-        dosC.add(c);
-    }
-  for(Character c : unoC){
-    for(Character e: dosC){
-        String g = String.valueOf(c)+ String.valueOf(e);
-        if(g!= null){
-            for(Character dr : diver){
-                if(ProduccionesNoTerminales.get(dr).equals(g)){
-                    d.append(dr);
+                int a = 0;
+                int b = 1;
+                while (a < i) {
+                    if (tablero[i][j] == null) {
+                        tablero[i][j] = this.Concat(tablero[a][j + a], tablero[a][j + b]);
+                    } else {
+                        tablero[i][j] += this.Concat(tablero[a][j + a], tablero[a][j + b]);
+                    }
+                    a++;
                 }
             }
         }
-    }
-  }
-  return d.toString();
-}*/
-    // Construir el String con todas las celdas calculadas
-     Set<Character> ax = new HashSet<>();
-   int a = tamanno-1;
-   int b = 0;
-   boolean verdadero = false;
-  String h = tablero[a][b];
-          for(int i = 0; i < h.length(); i++){
-             
-              ax.add(h.charAt(i));
-          }
-          if(ax.contains(axioma)){
-              verdadero = true;
-          }/*else{
-            return false;  
-          }*/
-       
-    return verdadero;
+        // Construir el String con todas las celdas calculadas
+        Set<Character> ax = new HashSet<>();
+        int a = tamanno - 1;
+        int b = 0;
+        boolean verdadero = false;
+        String h = tablero[a][b];
+        for (int i = 0; i < h.length(); i++) {
+
+            ax.add(h.charAt(i));
+        }
+        if (ax.contains(axioma)) {
+            verdadero = true;
+        }
+
+        return verdadero;
     }
 
 }
