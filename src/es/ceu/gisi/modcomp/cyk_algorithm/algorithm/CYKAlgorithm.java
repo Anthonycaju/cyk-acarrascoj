@@ -158,9 +158,15 @@ Set<Character> noTerminales = new HashSet<Character>();
      * gramática es vacía o si el autómata carece de axioma.
      */
     public boolean isDerived(String word) throws CYKAlgorithmException {
-     return this.algoritmoDerived(word);
+    try {
+        return algoritmoDerived(word);
+    } catch (CYKAlgorithmException ex) {
+        throw new CYKAlgorithmException(ex.getMessage());
     }
+}
 
+     
+    
     
 
     @Override
@@ -384,6 +390,7 @@ Set<Character> noTerminales = new HashSet<Character>();
        return sb.toString();
     }
     public boolean algoritmoDerived(String word) throws CYKAlgorithmException {
+        
         int tamanno = word.length();
     StringBuilder result = new StringBuilder();
     String[][] tablero = new String[tamanno][tamanno];
