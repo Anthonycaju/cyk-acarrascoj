@@ -224,9 +224,9 @@ Set<Character> noTerminales = new HashSet<Character>();
             int b= 1;
             while(a<i){
                 if(tablero [i][j]==null){
-                   tablero[i][j]=this.palabra(tablero[a][j+a], tablero[a][j+b]); 
+                   tablero[i][j]=this.Concat(tablero[a][j+a], tablero[a][j+b]); 
                 }else{
-                tablero[i][j]+=this.palabra(tablero[a][j+a], tablero[a][j+b]);
+                tablero[i][j]+=this.Concat(tablero[a][j+a], tablero[a][j+b]);
                 }
                 a++;
             }
@@ -243,14 +243,19 @@ Set<Character> noTerminales = new HashSet<Character>();
         }
         result.append("\n");
     }
-    
     return result.toString();
 }
-    /*
-    Metodo en Sucio que calcula el producto cartesiano de los símbolos de dos palabras 
-    y comprueba si son valor de algun hashMap
+   /**
+    * Método que genera el producto cartesiano, es decir, todas las concatenaciones posibles, de todos los caracteres
+    * de dos palabras y posteriormente las compara con las producciones de los cabezañes de las gramaticas para ver
+    * si coinciden y si si coincide con alguno lo annade a esa celda.
+    * 
+    * @param uno primer conjunto de caracteres a concatenar
+    * @param dos segundo conjutno de caracteress a concatenar
+    * @return  d.toString(); es decir, un conjunto de caracteres, formado por los cabezales que generar como producción
+    * alguna de las combinaxciones posibles entre los elementos de uno y dos.
     */
- public String palabra(String uno, String dos) {
+ public String Concat(String uno, String dos) {
     Set<Character> diver = new HashSet<>(ProduccionesNoTerminales.keySet());
     StringBuilder d = new StringBuilder();
     Set<Character> unoC = new HashSet<>();
@@ -270,10 +275,6 @@ Set<Character> noTerminales = new HashSet<Character>();
         char c = dos.charAt(i);
         dosC.add(c);
     }
-
-    
-      //  
-      
              for (Character c : unoC) {
         for (Character e : dosC) {
             for(Character dr : diver){
@@ -282,16 +283,7 @@ Set<Character> noTerminales = new HashSet<Character>();
                  if(f.contains(g)){
                      d.append(dr);
                  }
-               //d.append(g);
             }
-           
-            
-              
-            /*for(Character dr: diver){
-                if(ProduccionesNoTerminales.get(dr).equals(g)){
-                    d.append(dr);
-                }*/
-          //  d.append(g);
             }
         }
     return d.toString();
@@ -389,8 +381,16 @@ Set<Character> noTerminales = new HashSet<Character>();
        }
        return sb.toString();
     }
-    public boolean algoritmoDerived(String word) throws CYKAlgorithmException {
-        
+    
+    /**
+     * Este método es una copia del método algorithmStateToString, tiene la misma lógica parámetros, lo que diverge es 
+     * no solo el return que en este método se vuelve boolean; sino que además la forma propia del métod que pasa de ser String
+     * a ser boolean
+     * @param word
+     * @return True, si el axíoma esta presente en la celda de la priema columna última fila. En caso contrario devuelve un false
+     * @throws CYKAlgorithmException 
+     */
+    public boolean algoritmoDerived(String word) throws CYKAlgorithmException {  
         int tamanno = word.length();
     StringBuilder result = new StringBuilder();
     String[][] tablero = new String[tamanno][tamanno];
@@ -398,7 +398,7 @@ Set<Character> noTerminales = new HashSet<Character>();
     Set<String> combinaciones = new HashSet<>();
     Set<Character> key = new HashSet<>(ProduccionesNoTerminales.keySet());
 
-    // Comprobación de validez de la palabra
+    // Comprobación de validez de la Concat
     if (noTerminales.isEmpty() || Terminales.isEmpty() || axioma == '\0') {
         throw new CYKAlgorithmException("Gramática inválida");
     }
@@ -437,9 +437,9 @@ Set<Character> noTerminales = new HashSet<Character>();
             int b= 1;
             while(a<i){
                 if(tablero [i][j]==null){
-                   tablero[i][j]=this.palabra(tablero[a][j+a], tablero[a][j+b]); 
+                   tablero[i][j]=this.Concat(tablero[a][j+a], tablero[a][j+b]); 
                 }else{
-                tablero[i][j]+=this.palabra(tablero[a][j+a], tablero[a][j+b]);
+                tablero[i][j]+=this.Concat(tablero[a][j+a], tablero[a][j+b]);
                 }
                 a++;
             }
