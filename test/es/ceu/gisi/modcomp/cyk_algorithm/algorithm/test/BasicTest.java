@@ -538,8 +538,8 @@ public class BasicTest {
         cyk.addProduction('D', "b");
         
         cyk.setStartSymbol('S');
-      //  assertTrue(cyk.isDerived("baabba"));
-       // System.out.println( "Prueba Gráfica del funcionamiento G3"+ "\n" +cyk.algorithmStateToString("baabba"));
+       assertTrue(cyk.isDerived("ab"));
+       // System.out.println( "Prueba Gráfica del funcionamiento G3"+ "\n" +cyk.algorithmStateToString("ab"));
     }
    @Test
 public void comprobarDerivacionNoValidaG3() throws CYKAlgorithmException {
