@@ -438,9 +438,9 @@ public class BasicTest {
         cyk.addProduction('C', "AB");
         cyk.addProduction('C', "b");
         
-        assertTrue(cyk.isDerived("abba"));
-        System.out.println("Prueba Gráfica de funcionamiento G1"+ "\n" +  cyk.algorithmStateToString("abba"));
-        
+        assertTrue(cyk.isDerived("ababab"));
+        //System.out.println("Prueba Gráfica de funcionamiento G1"+ "\n" +  cyk.algorithmStateToString("ababab"));
+     
     }
      @Test
     public void comprobarDerivacionNoValidoG1()throws CYKAlgorithmException{
@@ -460,9 +460,9 @@ public class BasicTest {
         cyk.addProduction('C', "AB");
         cyk.addProduction('C', "b");
         
-        assertFalse(cyk.isDerived("aaab"));
-     //   System.out.println( "Prueba Gráfica del NO funcionamiento G1"+ "\n" +cyk.algorithmStateToString("aaab"));
-        //No pertenece porque no puede haber tres a seguidas
+        assertFalse(cyk.isDerived("aabbb"));
+     //   System.out.println( "Prueba Gráfica del NO funcionamiento G1"+ "\n" +cyk.algorithmStateToString("aabbb"));
+        
         
     }
     @Test
@@ -487,8 +487,9 @@ public class BasicTest {
           cyk.addProduction('D', "c");
           
           assertTrue(cyk.isDerived("a"));
-        System.out.println( "Prueba Gráfica del NO funcionamiento G2"+ "\n" +cyk.algorithmStateToString("a"));
+      //System.out.println( "Prueba Gráfica del funcionamiento G2"+ "\n" +cyk.algorithmStateToString("a"));
     }
+  
     @Test 
     public void comprobarDerivacionNoValidaG2() throws CYKAlgorithmException{
         cyk = new CYKAlgorithm();
@@ -511,6 +512,7 @@ public class BasicTest {
           cyk.addProduction('D', "c");
           
           assertFalse(cyk.isDerived("aaa"));
+          System.out.println( "Prueba Gráfica del NO funcionamiento G2"+ "\n" +cyk.algorithmStateToString("aaa"));
     }
    /* 
     @Test 

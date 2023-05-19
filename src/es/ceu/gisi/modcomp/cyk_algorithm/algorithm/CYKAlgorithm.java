@@ -102,7 +102,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
             if (noTerminales.contains(nonterminal) && terminales.contains(ter)) {
                 produccionesTerminales.put(nonterminal, ter);
             } else {
-                throw new CYKAlgorithmException("Mal  terminal");
+                throw new CYKAlgorithmException("Error porducido por no haber insertado proevioamente o el terminal a añadir o el no terminal");
             }
         } else if (elementos == 2) {
             char no1 = production.charAt(0);
@@ -111,7 +111,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
                 if (produccionesNoTerminales.get(nonterminal) != null) {
                     Set<String> pro = new HashSet<>(produccionesNoTerminales.get(nonterminal));
                     if (pro.contains(production)) {
-                        throw new CYKAlgorithmException("Mal noterminal rfepetido");
+                        throw new CYKAlgorithmException("Error producido debido a que esa producción ya ha sido añadida");
                     } else {
                         pro.add(production);
                         produccionesNoTerminales.put(nonterminal, pro);
