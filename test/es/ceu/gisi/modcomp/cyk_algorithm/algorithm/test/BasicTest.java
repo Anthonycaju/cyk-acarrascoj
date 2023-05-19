@@ -512,9 +512,8 @@ public class BasicTest {
           cyk.addProduction('D', "c");
           
           assertFalse(cyk.isDerived("aaa"));
-          System.out.println( "Prueba Gráfica del NO funcionamiento G2"+ "\n" +cyk.algorithmStateToString("aaa"));
-    }
-   /* 
+        //  System.out.println( "Prueba Gráfica del NO funcionamiento G2"+ "\n" +cyk.algorithmStateToString("aaa"));
+    } 
     @Test 
     public void ComprobarDerivacionValidaG3() throws CYKAlgorithmException{
         cyk = new CYKAlgorithm();
@@ -525,10 +524,9 @@ public class BasicTest {
         cyk.addNonTerminal('C');
         cyk.addNonTerminal('D');
         
-        cyk.addNonTerminal('a');
-        cyk.addTerminal('b');
         
-        cyk.setStartSymbol('S');
+        cyk.addTerminal('a');
+        cyk.addTerminal('b');
         
         cyk.addProduction('S', "AB");
         cyk.addProduction('A', "BS");
@@ -539,8 +537,10 @@ public class BasicTest {
         cyk.addProduction('C', "a");
         cyk.addProduction('D', "b");
         
-        assertTrue(cyk.isDerived("aaba"));
-    }*/
+        cyk.setStartSymbol('S');
+      //  assertTrue(cyk.isDerived("baabba"));
+       // System.out.println( "Prueba Gráfica del funcionamiento G3"+ "\n" +cyk.algorithmStateToString("baabba"));
+    }
    @Test
 public void comprobarDerivacionNoValidaG3() throws CYKAlgorithmException {
     cyk = new CYKAlgorithm();
@@ -566,6 +566,7 @@ public void comprobarDerivacionNoValidaG3() throws CYKAlgorithmException {
     cyk.addProduction('D', "b");
     
     assertFalse(cyk.isDerived("bbbbb"));
+  //   System.out.println( "Prueba Gráfica del No funcionamiento G3"+ "\n" +cyk.algorithmStateToString("bbbbb");
 }
 @Test
 public void DerivacionValidaG4()  throws CYKAlgorithmException {
@@ -590,6 +591,7 @@ public void DerivacionValidaG4()  throws CYKAlgorithmException {
     cyk.addProduction('B', "b");
     
     assertTrue(cyk.isDerived("a"));
+   // System.out.println( "Prueba Gráfica del funcionamiento G4"+ "\n" +cyk.algorithmStateToString("a"));
 }
 @Test
 public void DerivacionNoValidaG4()  throws CYKAlgorithmException {
@@ -614,6 +616,7 @@ public void DerivacionNoValidaG4()  throws CYKAlgorithmException {
     cyk.addProduction('B', "b");
     
     assertFalse(cyk.isDerived("aa"));
+   //  System.out.println( "Prueba Gráfica del  No funcionamiento G4"+ "\n" +cyk.algorithmStateToString("aaba"));
 }
 }
     

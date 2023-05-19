@@ -231,7 +231,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
     }
    /**
     * Método que genera el producto cartesiano, es decir, todas las concatenaciones posibles, de todos los caracteres
-    * de dos palabras y posteriormente las compara con las producciones de los cabezañes de las gramaticas para ver
+    * de dos palabras y posteriormente las compara con los no Terminales que generar las producciones de las gramaticas para ver
     * si coinciden y si si coincide con alguno lo annade a esa celda.
     * 
     * @param uno primer conjunto de caracteres a concatenar
@@ -347,7 +347,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
     
     /**
      * Este método es una copia del método algorithmStateToString, tiene la misma lógica parámetros, lo que diverge es 
-     * no solo el return que en este método se vuelve boolean; sino que además la forma propia del métod que pasa de ser String
+     * no solo el return que en este método se vuelve boolean; sino que además la forma propia del método que pasa de ser String
      * a ser boolean
      * @param word
      * @return True, si el axíoma esta presente en la celda de la priema columna última fila. En caso contrario devuelve un false
